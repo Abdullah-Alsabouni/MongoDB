@@ -1,0 +1,457 @@
+
+				     /* MongoDB */
+
+/* Adding new Documents */
+db.books.insertOne({title: "The Color of Magic", author: "Terry Pratchett", pages: 300, rating: 7, genres: ["fantasy", "magic"]})  // books kümesine döküman ekle
+
+
+
+db.authors.insertOne({ name: "Brandon Sanderson", age: 60}) // authors küme olmasa bile authors diye bir küme oluştur ve ona döküman ekle
+
+db.books.insertMany([{title: "The Color of Magic", author: "Terry Pratchett", pages: 300, rating: 7, genres: ["fantasy", "magic"]}, {........}, {.......}]) // books kümesine biren fazla döküman ekle
+
+
+
+//////////////////
+
+/* Finding Documents */
+
+db.books.find() // books kümesindeki ilk 20 dökümanı bulur, "it" yazarak sonraki 20 dökümanı bulur
+
+db.books.find({"author": "Terry Pratchett"})
+ [
+  {
+    _id: ObjectId('6606b3a65b414d66bfd14a0e'),
+    title: 'The Color of magic',
+    author: 'Terry Pratchett',
+    pages: 300,
+    rating: 7,
+    genres: [ 'fantasy', 'magic' ]
+  },
+  {
+    _id: ObjectId('6607f8fca1a1c3ac93d14a0e'),
+    title: 'The Color of Magic',
+    author: 'Terry Pratchett',
+    pages: 300,
+    rating: 7,
+    genres: [ 'fantasy', 'magic' ]
+  }
+]
+
+
+db.books.find({author: "Terry Pratchett"}, {title: 1, author: 1}) // Dökümanın sadece title ve author özelliklerini bul
+ [
+  {
+    _id: ObjectId('6606b3a65b414d66bfd14a0e'),
+    title: 'The Color of magic',
+    author: 'Terry Pratchett'
+  },
+  {
+    _id: ObjectId('6607f8fca1a1c3ac93d14a0e'),
+    title: 'The Color of Magic',
+    author: 'Terry Pratchett'
+  }
+] 
+
+
+db.books.find({}, {title: 1, author: 1}) // books kümesindeki tüm dökümanların title ve author özelliklerini göster
+[
+  {
+    _id: ObjectId('6606ad6adc1d68007bff250e'),
+    title: 'Name of the Wing',
+    author: 'Patrick Rothfuss'
+  },
+  {
+    _id: ObjectId('6606afcedc1d68007bff2511'),
+    title: 'The final Empire',
+    author: 'Brandon Sanderson'
+  },
+  {
+    _id: ObjectId('6606afcedc1d68007bff2512'),
+    title: 'The way od Kings',
+    author: 'Brandon Sanderson'
+  },
+  {
+    _id: ObjectId('6606afcedc1d68007bff2513'),
+    title: 'The Call of the Weird',
+    author: 'Louis Theroux'
+  },
+  {
+    _id: ObjectId('6606b3a65b414d66bfd14a0e'),
+    title: 'The Color of magic',
+    author: 'Terry Pratchett'
+  },
+  {
+    _id: ObjectId('6607f8fca1a1c3ac93d14a0e'),
+    title: 'The Color of Magic',
+    author: 'Terry Pratchett'
+  }
+]
+
+
+db.books.findOne({_id: ObjectId('6607f8fca1a1c3ac93d14a0e')}) // id ile çağırma
+{
+  _id: ObjectId('6607f8fca1a1c3ac93d14a0e'),
+  title: 'The Color of Magic',
+  author: 'Terry Pratchett',
+  pages: 300,
+  rating: 7,
+  genres: [ 'fantasy', 'magic' ]
+}
+
+//////////////////////
+db.books.find().count()
+6
+
+db.books.find({ author: "Brandon Sanderson" }).count()
+2
+
+
+db.books.find().limit(3)
+
+[
+  {
+    _id: ObjectId('6606ad6adc1d68007bff250e'),
+    title: 'Name of the Wing',
+    author: 'Patrick Rothfuss',
+    pages: '500',
+    genres: [ 'fantasy', 'magical' ],
+    rating: 9
+  },
+  {
+    _id: ObjectId('6606afcedc1d68007bff2511'),
+    title: 'The final Empire',
+    author: 'Brandon Sanderson',
+    pages: 450,
+    genres: [ 'fantasy', 'dystopian' ],
+    rating: 8
+  },
+  {
+    _id: ObjectId('6606afcedc1d68007bff2512'),
+    title: 'The way od Kings',
+    author: 'Brandon Sanderson',
+    pages: 350,
+    genres: [ 'fantasy', 'dystopian' ],
+    rating: 9
+  }
+]
+
+db.books.find().limit(3).count()
+3
+
+db.books.find().sort({ author: 1 }) // Yazara göre alfabetik sırala
+
+[
+  {
+    _id: ObjectId('6606afcedc1d68007bff2511'),
+    title: 'The final Empire',
+    author: 'Brandon Sanderson',
+    pages: 450,
+    genres: [ 'fantasy', 'dystopian' ],
+    rating: 8
+  },
+  {
+    _id: ObjectId('6606afcedc1d68007bff2512'),
+    title: 'The way od Kings',
+    author: 'Brandon Sanderson',
+    pages: 350,
+    genres: [ 'fantasy', 'dystopian' ],
+    rating: 9
+  },
+  {
+    _id: ObjectId('6606afcedc1d68007bff2513'),
+    title: 'The Call of the Weird',
+    author: 'Louis Theroux',
+    pages: 359,
+    genres: [ 'non-fiction', 'strange', 'comedy' ],
+    rating: 7
+  },
+  {
+    _id: ObjectId('6606ad6adc1d68007bff250e'),
+    title: 'Name of the Wing',
+    author: 'Patrick Rothfuss',
+    pages: '500',
+    genres: [ 'fantasy', 'magical' ],
+    rating: 9
+  },
+  {
+    _id: ObjectId('6606b3a65b414d66bfd14a0e'),
+    title: 'The Color of magic',
+    author: 'Terry Pratchett',
+    pages: 300,
+    rating: 7,
+    genres: [ 'fantasy', 'magic' ]
+  },
+  {
+    _id: ObjectId('6607f8fca1a1c3ac93d14a0e'),
+    title: 'The Color of Magic',
+    author: 'Terry Pratchett',
+    pages: 300,
+    rating: 7,
+    genres: [ 'fantasy', 'magic' ]
+  }
+]
+
+
+db.books.find().sort({ author: 1 }) // Yazara göre ters alfabetik sırala
+
+
+// Nested Documents
+
+db.books.insertOne({title: "The Way of Kings", author: "Brandon Sanderson", rating: 9, pages: 400, genres: ["fantasy"], reviews: [{name: "Yoshi", body: "Great book!!"}, {name: "mario", body:"so so"}]})
+
+//////////////////
+
+  Operators & Complex Queries
+
+db.books.find({ rating: {$gt: 7}})    // rating'i 7 den daha büyük kitapları bul
+[
+  {
+    _id: ObjectId('660ab3f8fa4b6441bdd14a0e'),
+    title: 'The Way of Kings',
+    author: 'Brandon Sanderson',
+    rating: 9,
+    pages: 400,
+    genres: [ 'fantasy' ],
+    reviews: [
+      { name: 'Yoshi', body: 'Great book!!' },
+      { name: 'mario', body: 'so so' }
+    ]
+  }
+]
+
+
+db.books.find({ rating: {$lt: 10}}) // rating'i 10 dan daha küçük kitapları bul
+
+db.books.find({ rating: {$lte: 10}}) // rating'i 10 küçük eşit kitapları bul
+
+
+
+
+db.books.find({$or: [{rating: 8}, {rating: 9}]}) // rating'i 8 veya 9 olan kitapları bul
+[
+  {
+    _id: ObjectId('660ab3f8fa4b6441bdd14a0e'),
+    title: 'The Way of Kings',
+    author: 'Brandon Sanderson',
+    rating: 9,
+    pages: 400,
+    genres: [ 'fantasy' ],
+    reviews: [
+      { name: 'Yoshi', body: 'Great book!!' },
+      { name: 'mario', body: 'so so' }
+    ]
+  }
+]
+
+
+
+db.books.find({$or: [{pages: {$lt: 500}}, {pages: {$gt: 400}}]})
+
+//////////////////
+
+	$in & $nin
+
+db.books.find({ rating: {$in: [7, 8, 9]}})   // rating'i 7 veya 8 veya 9 olan kitapları bul
+
+
+bookstore> db.books.find({ rating: {$nin: [7, 8]}})  // raiting'i 7 veya 8 olmayan kitapları bul
+
+
+////////////////////
+
+db.books.find({genres: "fantasy"})
+
+
+[
+  {
+    _id: ObjectId('660ab3f8fa4b6441bdd14a0e'),
+    title: 'The Way of Kings',
+    author: 'Brandon Sanderson',
+    rating: 9,
+    pages: 400,
+    genres: [ 'fantasy' ],
+    reviews: [
+      { name: 'Yoshi', body: 'Great book!!' },
+      { name: 'mario', body: 'so so' }
+    ]
+  },
+  {
+    _id: ObjectId('660bf4b6eb29e6aef7d14a11'),
+    title: 'The Color of Magic',
+    author: 'Terry Pratchett',
+    rating: 8,
+    pages: 500,
+    genres: [ 'fantasy', 'Magic' ]
+  }
+]
+
+///////////////////
+
+db.books.find({genres: ["fantasy"]})
+
+[
+  {
+    _id: ObjectId('660ab3f8fa4b6441bdd14a0e'),
+    title: 'The Way of Kings',
+    author: 'Brandon Sanderson',
+    rating: 9,
+    pages: 400,
+    genres: [ 'fantasy' ],
+    reviews: [
+      { name: 'Yoshi', body: 'Great book!!' },
+      { name: 'mario', body: 'so so' }
+    ]
+  }
+]
+
+////////////////////
+bookstore> db.books.find({genres: ["fantasy", "Magic"]})
+
+[
+  {
+    _id: ObjectId('660bf4b6eb29e6aef7d14a11'),
+    title: 'The Color of Magic',
+    author: 'Terry Pratchett',
+    rating: 8,
+    pages: 500,
+    genres: [ 'fantasy', 'Magic' ]
+  }
+]
+
+/////////////////
+
+db.books.find({genres: {$all: ["fantasy", "Wing"]}}) 
+
+[
+  {
+    _id: ObjectId('660bf91eeb29e6aef7d14a12'),
+    title: 'Name of the Wing',
+    author: 'Patrick Rothfuss',
+    rating: 7,
+    pages: 300,
+    genres: [ 'fantasy', 'Magic', 'Wing' ]
+  }
+]
+
+
+db.books.find({genres: {$all: ["fantasy", "Magic"]}})
+[
+  {
+    _id: ObjectId('660bf4b6eb29e6aef7d14a11'),
+    title: 'The Color of Magic',
+    author: 'Terry Pratchett',
+    rating: 8,
+    pages: 500,
+    genres: [ 'fantasy', 'Magic' ]
+  },
+  {
+    _id: ObjectId('660bf91eeb29e6aef7d14a12'),
+    title: 'Name of the Wing',
+    author: 'Patrick Rothfuss',
+    rating: 7,
+    pages: 300,
+    genres: [ 'fantasy', 'Magic', 'Wing' ]
+  }
+]
+
+// Querying Nested Document
+
+db.books.find({"reviews.name": "Yoshi"}) 
+[
+  {
+    _id: ObjectId('660ab3f8fa4b6441bdd14a0e'),
+    title: 'The Way of Kings',
+    author: 'Brandon Sanderson',
+    rating: 9,
+    pages: 400,
+    genres: [ 'fantasy' ],
+    reviews: [
+      { name: 'Yoshi', body: 'Great book!!' },
+      { name: 'mario', body: 'so so' }
+    ]
+  }
+
+//   Deleting Documents
+
+db.books.deleteOne({_id: ObjectId('660bf4b6eb29e6aef7d14a11')})
+
+
+
+//   Updating Documents
+
+db.books.updateOne({_id: ObjectId('660ab3f8fa4b6441bdd14a0e')}, {$set: {rating: 8, pages: 340}})
+
+====> 
+
+db.books.find()
+[
+  {
+    _id: ObjectId('660ab3f8fa4b6441bdd14a0e'),
+    title: 'The Way of Kings',
+    author: 'Brandon Sanderson',
+    rating: 8,
+    pages: 340,
+    genres: [ 'fantasy' ],
+    reviews: [
+      { name: 'Yoshi', body: 'Great book!!' },
+      { name: 'mario', body: 'so so' }
+    ]
+  },
+  {
+    _id: ObjectId('660bf91eeb29e6aef7d14a12'),
+    title: 'Name of the Wing',
+    author: 'Patrick Rothfuss',
+    rating: 7,
+    pages: 300,
+    genres: [ 'fantasy', 'Magic', 'Wing' ]
+  }
+]
+
+
+db.books.updateOne({rating: 8}, {$set: {rating: 9}}) // rating'i 8 olan kitabın rating'ini güncelle
+
+ {
+    _id: ObjectId('660ab3f8fa4b6441bdd14a0e'),
+    title: 'The Way of Kings',
+    author: 'Brandon Sanderson',
+    rating: 9,
+    pages: 844,
+    genres: [ 'fantasy' ],
+    reviews: [
+      { name: 'Yoshi', body: 'Great book!!' },
+      { name: 'mario', body: 'so so' }
+    ]
+  }
+
+
+db.books.updateOne({_id: ObjectId('660ab3f8fa4b6441bdd14a0e')}, {$inc: {pages: 12}})  // $inc: increment  ==> pages += 12
+
+ {
+    _id: ObjectId('660ab3f8fa4b6441bdd14a0e'),
+    title: 'The Way of Kings',
+    author: 'Brandon Sanderson',
+    rating: 9,
+    pages: 856,
+    genres: [ 'fantasy' ],
+    reviews: [
+      { name: 'Yoshi', body: 'Great book!!' },
+      { name: 'mario', body: 'so so' }
+    ]
+  }
+
+db.books.updateOne({_id: ObjectId('660ab3f8fa4b6441bdd14a0e')}, {$inc: {pages: -12}}) // pages -= 12
+
+
+
+//////////////
+
+db.books.updateOne({_id: ObjectId('660bf91eeb29e6aef7d14a12')}, {$pull: {genres: "fantasy"}}) // $pull bir diziden eleman çıkartmak için kullanılır
+
+
+db.books.updateOne({_id: ObjectId('660bf91eeb29e6aef7d14a12')}, {$push: {genres: "fantasy"}}) // $push bir diziye eleman eklemek için kullanılır
+
+db.books.updateOne({_id: ObjectId('660bf91eeb29e6aef7d14a12')}, {$push: {genres: {$each: ["employee", "1"]}}}) // $each: Birden fazla eleman eklemek için kullanılır
+
+
+
