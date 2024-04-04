@@ -88,7 +88,14 @@ db.books.find({}, {title: 1, author: 1}) // books kümesindeki tüm dökümanlar
   }
 ]
 
-
+////////////////////
+db.books.find({}, {rating: 1})
+[
+  { _id: ObjectId('660ab3f8fa4b6441bdd14a0e'), rating: 9 },
+  { _id: ObjectId('660bf91eeb29e6aef7d14a12'), rating: 7 },
+  { _id: ObjectId('660d526d81de6e36b9d14a0e'), rating: 10 }
+]
+//////////////////////////
 db.books.findOne({_id: ObjectId('6607f8fca1a1c3ac93d14a0e')}) // id ile çağırma
 {
   _id: ObjectId('6607f8fca1a1c3ac93d14a0e'),
@@ -453,5 +460,14 @@ db.books.updateOne({_id: ObjectId('660bf91eeb29e6aef7d14a12')}, {$push: {genres:
 
 db.books.updateOne({_id: ObjectId('660bf91eeb29e6aef7d14a12')}, {$push: {genres: {$each: ["employee", "1"]}}}) // $each: Birden fazla eleman eklemek için kullanılır
 
+///////////////
+
+db.books.find().skip(1)  // collection'in ilk dokümanını atlayarak diğer dökümaları görüntüler
 
 
+db.books.aggregate([{$group: {_id: "$author", authors: {$sum: 1}}}]) // author'ların toplamına göre gruplandırma işlemi
+
+[
+  { _id: 'Brandon Sanderson', authors: 2 },
+  { _id: 'Patrick Rothfuss', authors: 1 }
+]
